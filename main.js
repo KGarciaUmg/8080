@@ -29,6 +29,7 @@ function updateUI() {
 
     renderMemory();
     renderStack();
+    updateFPUUI();
 }
 
 function renderStack() {
@@ -189,3 +190,35 @@ document.getElementById('btn-mem-go').addEventListener('click', () => {
 
 // Initial UI update
 updateUI();
+
+
+
+function updateFPUUI() {
+    if (!cpu || !cpu.fpu) return;
+    
+    // 1. Actualizar Operación y Estado
+    const lastOpElem = document.getElementById('fpu-last-op');
+    const statusElem = document.getElementById('fpu-status');
+    const flagZeroElem = document.getElementById('fpu-flag-zero');
+    const stackElem = document.getElementById('fpu-stack-view');
+
+    if (lastOpElem) lastOpElem.innerText = cpu.fpu.lastOp;
+    if (statusElem) statusElem.innerText = '0x' + cpu.fpu.status.toString(16).padStart(2, '0').toUpperCase();
+    
+    if (flagZeroElem) {
+        const hasDivZero = (cpu.fpu.status & 0x02) !== 0;
+        flagZeroElem.innerText = hasDivZero ? 'ERROR (DIV/0)' : 'NO';
+        flagZeroElem.style.color = hasDivZero ? '#dc2626' : '#16a34a';
+    }
+
+    // 2. Mostrar contenido de la pila
+    if (stackElem) {
+        if (cpu.fpu.stack.length === 0) {
+            stackElem.innerText = '[ Pila vacía ]';
+        } else {
+            stackElem.innerHTML = cpu.fpu.stack
+                .map((val, idx) => `<span style="background: #e0e7ff; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Top[${idx}]: <strong>${val}</strong></span>`)
+                .join(' ');
+        }
+    }
+}

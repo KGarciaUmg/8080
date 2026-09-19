@@ -1,5 +1,6 @@
 class Intel8080 {
     constructor() {
+        this.fpu = new FPU8080();
         this.memory = new Uint8Array(65536);
         this.reset();
     }
@@ -266,8 +267,20 @@ class Intel8080 {
             case 0x3F: this.flags.cy = !this.flags.cy; break; // CMC
 
             // Special
-            case 0xDB: this.fetch(); break; // IN (Ignored for now)
-            case 0xD3: this.fetch(); break; // OUT (Ignored for now)
+            case 0xDB: { // IN port
+                const port = this.fetch();
+                if (port === 0xE0 || port === 0xE1) {
+                    this.registers.a = this.fpu.readPort(port);
+                }
+                break;
+            }
+            case 0xD3: { // OUT port
+                const port = this.fetch();
+                if (port === 0xE0 || port === 0xE1) {
+                    this.fpu.writePort(port, this.registers.a);
+                }
+                break;
+            }
             case 0xFB: break; // EI
             case 0xF3: break; // DI
         }
@@ -398,8 +411,4 @@ class Intel8080 {
             case 7: this.registers.a = val; break;
         }
     }
-}
-
-if (typeof module !== 'undefined') {
-    module.exports = Intel8080;
 }

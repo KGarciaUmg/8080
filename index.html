@@ -93,9 +93,38 @@ HLT"></textarea>
                     <div id="memory-table"></div>
                 </div>
             </div>
+            <!-- FPU Dashboard -->
+            <div class="card" id="fpu-dashboard" style="margin-top: 15px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; background: #ffffff;">
+                <h3 style="margin-top: 0; margin-bottom: 12px; font-size: 1.1rem; color: #1e40af; border-bottom: 2px solid #3b82f6; padding-bottom: 4px;">
+                    FPU Coprocessor (Puertos 0xE0 / 0xE1)
+                </h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; text-align: center;">
+                    <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px;">
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: bold;">ÚLTIMA OP</div>
+                        <div id="fpu-last-op" style="font-size: 1rem; font-weight: bold; font-family: monospace; color: #0f172a;">NONE</div>
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px;">
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: bold;">ESTADO</div>
+                        <div id="fpu-status" style="font-size: 1rem; font-weight: bold; font-family: monospace; color: #0f172a;">0x00</div>
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px;">
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: bold;">FLAG DIV/0</div>
+                        <div id="fpu-flag-zero" style="font-size: 1rem; font-weight: bold; font-family: monospace; color: #16a34a;">NO</div>
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px;">
+                    <span style="font-size: 0.75rem; color: #64748b; font-weight: bold;">PILA / OPERANDOS FLOTANTES (Float32):</span>
+                    <div id="fpu-stack-view" style="margin-top: 4px; font-family: monospace; font-size: 0.95rem; color: #1e3a8a; word-break: break-all;">
+                        [ Pila vacía ]
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
+    <script src="fpu.js"></script>
     <script src="cpu.js"></script>
     <script src="assembler.js"></script>
     <script src="main.js"></script>
